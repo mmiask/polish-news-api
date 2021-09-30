@@ -1,0 +1,20 @@
+[
+  {
+    "name": "TVN24",
+    "id": 204,
+    "categories": ["news", "weather"],
+    "url": "https://tvn24.pl"
+  },
+  {
+    "name": "TVP INFO",
+    "id": 105,
+    "categories": ["news"],
+    "url": "https://tvp.info"
+  },
+  {
+    "name": "Pudelek",
+    "id": 59,
+    "categories": ["entertainment"],
+    "url": "https://pudelek.pl"
+  }
+]
