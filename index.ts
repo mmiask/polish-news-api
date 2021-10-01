@@ -1,7 +1,8 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const logger = require('morgan');
-const path = require('path');
+import express from 'express';
+import bodyParser from 'body-parser';
+import logger from 'morgan';
+import router from './routes/sources';
+
 const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -13,15 +14,15 @@ app.set('env', NODE_ENV);
 app.use(logger('tiny'));
 app.use(bodyParser.json());
 
-app.use('/', require(path.join(__dirname, 'routes', 'sources.js')));
+app.use(router);
 
-app.use((req, res, next) => {
-  const err = new Error(`${req.method} ${req.url} Not Found`);
-  err.status = 404;
+app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+  const err = new Error(`${req.method} ${req.url} Not Found`) as any;
+  err.statusCode = 404;
   next(err);
 });
 
-app.use((err, req, res, next) => {
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
   console.error(err);
   res.status(err.status || 500);
   res.json({
