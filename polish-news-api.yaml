@@ -1,0 +1,215 @@
+openapi: 3.1.0
+info:
+  title: Polish News API
+  version: '1.0'
+  description: >-
+    This is an API for obtaining information from Polish media companies and
+    individuals
+  summary: Polish news aggregate
+  contact:
+    name: Michael Miaskowski
+    email: mmiask92@gmail.com
+    url: 'https://michaelmiaskowski.com/'
+servers:
+  - url: 'http://localhost:3000'
+    description: local
+paths:
+  /sources:
+    get:
+      summary: List sources
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: number
+                    description: total number of results matching the request
+                  sources:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Source'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: get-sources
+      description: List sources available in this API
+      parameters:
+        - schema:
+            type: string
+            enum:
+              - business
+              - weather
+              - sport
+              - entertainment
+              - traffic
+              - technology
+              - science
+            default: all
+          in: query
+          name: category
+          description: A category of a source
+      x-internal: false
+  /headlines:
+    get:
+      summary: List article headlines
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      operationId: get-headlines
+      description: Returns headlines for specified sources
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: asdfsd
+  '/sources/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Get Source by ID
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Source'
+      operationId: get-sources-id
+      description: Get a single Source using an ID
+      parameters: []
+  /articles:
+    get:
+      summary: List articles
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resultsNumber:
+                    type: number
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Article'
+      operationId: get-articles
+      description: ''
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: searchQuery
+        - schema:
+            type: string
+          in: query
+          name: from
+        - schema:
+            type: string
+          in: query
+          name: to
+        - schema:
+            type: string
+          in: query
+          name: title
+        - schema:
+            type: string
+          in: query
+          name: sources
+        - schema:
+            type: string
+          in: query
+          name: sortBy
+components:
+  schemas:
+    Source:
+      title: Source
+      type: object
+      properties:
+        name:
+          type: string
+          description: name of the source
+        id:
+          type: number
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        url:
+          type: string
+        articlesAmount:
+          type: number
+      required:
+        - name
+        - id
+    Error:
+      title: Error
+      type: object
+      properties:
+        code:
+          type: number
+        message:
+          type: string
+      description: A standard error object
+      examples:
+        - code: 404
+          message: Not Found
+    Category:
+      type: string
+      title: Category
+      enum:
+        - business
+        - weather
+        - sport
+        - entertainment
+        - traffic
+        - technology
+        - science
+      default: all
+    Article:
+      title: Article
+      type: object
+      description: Article object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        author:
+          type: string
+        url:
+          type: string
+        imgUrl:
+          type: string
+        dateTime:
+          type: string
+        data:
+          type: string
+  securitySchemes:
+    API Key - 1:
+      name: API Key
+      type: apiKey
+      in: query
+security:
+  - API Key - 1: []

@@ -1,20 +1,20 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import logger from 'morgan';
-import router from './routes/sources';
+import routes from './routes';
 
 const app = express();
 
 const PORT = process.env.PORT || 3000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
+
 app.set('port', PORT);
 app.set('env', NODE_ENV);
 
 app.use(logger('tiny'));
-app.use(bodyParser.json());
+app.use(express.json());
 
-app.use(router);
+app.use('/', routes);
 
 app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
   const err = new Error(`${req.method} ${req.url} Not Found`) as any;
@@ -28,6 +28,7 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
   res.json({
     error: {
       message: err.message,
+      code: err.statusCode
     },
   });
 });
