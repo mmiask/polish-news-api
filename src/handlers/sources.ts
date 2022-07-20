@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import mock from '../mockData.json';
+import mock from '../../mockData.json';
 
 interface Source {
   name: string,
@@ -8,7 +8,7 @@ interface Source {
   url: string
 } 
 
-export async function getSource(req: Request, res: Response, next: NextFunction): Promise<void> {
+export function getSource(req: Request, res: Response, next: NextFunction): void {
   try {
     const sources: Source[] = mock;
     const source = sources.find(source => source.id === Number(req.params.id));
@@ -19,4 +19,8 @@ export async function getSource(req: Request, res: Response, next: NextFunction)
   } catch (e) {
     next(e);
   }
+}
+
+export function listSources(req: Request, res: Response, next: NextFunction): void {
+    res.status(200).send('test2');
 }

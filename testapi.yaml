@@ -1,17 +1,16 @@
-openapi: 3.1.0
+openapi: 3.0.3
 info:
   title: Polish News API
   version: '1.0'
   description: >-
     This is an API for obtaining information from Polish media companies and
     individuals
-  summary: Polish news aggregate
   contact:
     name: Michael Miaskowski
     email: mmiask92@gmail.com
     url: 'https://michaelmiaskowski.com/'
 servers:
-  - url: 'http://localhost:3000'
+  - url: 'http://localhost:5001/api/v1'
     description: local
 paths:
   /sources:
@@ -170,9 +169,6 @@ components:
         message:
           type: string
       description: A standard error object
-      examples:
-        - code: 404
-          message: Not Found
     Category:
       type: string
       title: Category
